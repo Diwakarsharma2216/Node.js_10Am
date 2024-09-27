@@ -9,7 +9,7 @@ app.use(cors());
 
 app.use(express.static("./uploads"));
 
-app.post("/upload", upload.single("file"), async (req, res) => {
+app.post("/upload", upload.array("file",6), async (req, res) => {
   const { filename } = req.file;
 
   try {

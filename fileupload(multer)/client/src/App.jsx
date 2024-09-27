@@ -49,7 +49,7 @@ function App() {
       <h1>Uploaded File</h1>
       {
         imagesfromdb.map((el)=>{
-          return <img  src={baseurl+"/"+el.filename} alt="uploaded image" />
+          return <img  height={200} width={200} src={baseurl+"/"+el.filename} alt="uploaded image" />
         })
       }
     </>
