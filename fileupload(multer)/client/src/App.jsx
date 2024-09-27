@@ -5,11 +5,38 @@ const baseurl = "http://localhost:8080";
 function App() {
   const [file, setfile] = useState("");
 
-  const handlclick = () => {};
+  const [imagesfromdb,setimagesfromdb]=useState([])
+  const getdatafromdb=()=>{
+    axios.get(`${baseurl}/getimages`)
+    .then((res)=>{
+      setimagesfromdb(res.data)
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+  const handlclick = () => {
+    axios
+      .post(
+        `${baseurl}/upload`,
+        { file },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        getdatafromdb()
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  useEffect(() => {
-    getdatafromdb();
-  }, []);
+  useEffect(()=>{
+    getdatafromdb()
+  },[])
   return (
     <>
       <input
@@ -20,6 +47,11 @@ function App() {
       <button onClick={handlclick}>Upload</button>
 
       <h1>Uploaded File</h1>
+      {
+        imagesfromdb.map((el)=>{
+          return <img  src={baseurl+"/"+el.filename} alt="uploaded image" />
+        })
+      }
     </>
   );
 }
